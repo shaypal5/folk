@@ -1,7 +1,5 @@
 """Parameterized model abstraction."""
 
-# from sklearn.model_selection import P
-
 
 class ParameterizedModel(object):
     """A parameterized model.
@@ -31,6 +29,18 @@ class ParameterizedModel(object):
         """
         for params in self.param_grid:
             yield self.model_getter(**params)
+
+    def model_n_params_iter(self):
+        """Iterate on all model and parameters pairs induced by this
+        parameterized model.
+
+        Returns
+        -------
+        models : iterator over tuples
+            Yields 2-tuples of an estimator object and a dict.
+        """
+        for params in self.param_grid:
+            yield self.model_getter(**params), params
 
     def model_by_params(self, params):
         """Returns a realized model by the given params.

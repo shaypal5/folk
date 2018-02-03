@@ -1,7 +1,5 @@
 """Parameterized pipeline abstraction."""
 
-# from sklearn.model_selection import P
-
 
 class ParameterizedPipeline(object):
     """A parameterized pipeline.
@@ -35,6 +33,18 @@ class ParameterizedPipeline(object):
         """
         for params in self.param_grid:
             yield self.pipeline_getter(**params)
+
+    def pipe_n_params_iter(self):
+        """Iterate on all pipeline and parameters pairs induced by this
+        parameterized pipieline.
+
+        Returns
+        -------
+        models : iterator over tuples
+            Yields 2-tuples of a pdpipe.Pipeline and a dict.
+        """
+        for params in self.param_grid:
+            yield self.pipeline_getter(**params), params
 
     def pipeline_by_params(self, params):
         """Returns a realized pipeline by the given params.
