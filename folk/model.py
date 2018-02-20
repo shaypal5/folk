@@ -56,3 +56,37 @@ class ParameterizedModel(object):
             An estimator.
         """
         return self.model_getter(**params)
+
+
+class ConstrainedParameterizedModel(ParameterizedModel):
+    """A constrained parameterized model.
+
+    Parameters
+    ----------
+    model_getter : function
+        A function that returns an estimator object implementing ‘fit’ when
+        supplied with values for its required keyword arguments, ignoring any
+        unkown keyword arguments.
+    param_grid : skutil.model_selection.ConstrainedParameterGrid
+        A constrained grid over model parameters.
+    """
+
+    def partial(self, assign_grid):
+        """Returns a new parameterized model by the given partial assignment.
+
+        Parameters
+        ----------
+        assign_grid : dict of string to object or sequence
+            A, possibly partial, assignment to the parameters of the parameter
+            grid. Keys not appearing in this grid are ignored.
+
+        Returns
+        -------
+        ConstrainedParameterizedModel
+            A new constrained parameterized model induced by the given partial
+            assignment.
+        """
+        return ConstrainedParameterizedModel(
+            model_getter=self.model_getter,
+            param_grid=self.param_grid.partial(assign_grid),
+        )
