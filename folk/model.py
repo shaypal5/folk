@@ -115,4 +115,5 @@ class ConstrainedParameterizedModel(ParameterizedModel):
         return ConstrainedParameterizedModel(
             model_getter=self._model_getter,
             param_grid=self._param_grid.partial(assign_grid),
+            model_id_getter=self._model_id_getter,
         )
