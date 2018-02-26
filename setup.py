@@ -25,6 +25,8 @@ TEST_REQUIRES = [
     'pytest', 'coverage', 'pytest-cov',
     # test dependencies
     'pandas', 'pdpipe', 'skutil',
+    # to be able to run `python setup.py checkdocs`
+    'collective.checkdocs', 'pygments',
 ]
 
 with open('README.rst') as f:
