@@ -1,8 +1,13 @@
-folk
-######
+folk |folk_icon|
+################
 |PyPI-Status| |PyPI-Versions| |Build-Status| |Codecov| |LICENCE|
 
 Folksy experiment management for Machine Learning.
+
+.. |birch_icon| image:: https://github.com/shaypal5/folk/blob/0d8f02e6c23161169744f68b5d25703843836cc3/folk.png 
+   :height: 24
+   :width: 24 px
+   :scale: 100 %
 
 .. code-block:: python
 

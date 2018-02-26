@@ -15,7 +15,11 @@ if sys.version_info.major < 3 or sys.version_info.minor < 5:
     sys.exit(1)
 
 
-INSTALL_REQUIRES = ['numpy', 'scipy', 'scikit-learn']
+INSTALL_REQUIRES = [
+    'numpy', 'scipy', 'scikit-learn',
+    # my packages
+    'birch>=0.0.6', 'decore', 'strct', 'pdutil',
+]
 TEST_REQUIRES = ['pytest', 'coverage', 'pytest-cov']
 
 with open('README.rst') as f:
@@ -25,7 +29,7 @@ setuptools.setup(
     author="Shay Palachy",
     author_email="shay.palachy@gmail.com",
     name='folk',
-    description='Utilities for scikit-learn.',
+    description='Folksy experiment management for Machine Learning.',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     long_description=README,

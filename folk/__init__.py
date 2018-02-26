@@ -5,6 +5,9 @@ from .model import (  # noqa: F401
     ConstrainedParameterizedModel,
 )
 from .pipe import ParameterizedPipeline  # noqa: F401
+from .evaluate import (  # noqa: F401
+    eval_param_pipeline_n_model,
+)
 
 from ._version import get_versions
 __version__ = get_versions()['version']
