@@ -5,6 +5,7 @@ from .model import (  # noqa: F401
     ConstrainedParameterizedModel,
 )
 from .pipe import ParameterizedPipeline  # noqa: F401
+from .metricsdb import MetricKey  # noqa: F401
 from .evaluate import (  # noqa: F401
     eval_param_pipeline_n_model,
 )

@@ -5,8 +5,8 @@ folk |folk_icon|
 Folksy experiment management for Machine Learning.
 
 .. |folk_icon| image:: https://github.com/shaypal5/folk/blob/01a04e5941499df730cbe475b7a47434a5e2ebe7/folk.png 
-   :height: 24
-   :width: 24 px
+   :height: 32
+   :width: 32 px
    :scale: 100 %
 
 .. code-block:: python

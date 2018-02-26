@@ -14,7 +14,7 @@ from .metricsdb import (
 
 
 def eval_model_by_params(
-        run_id, model, model_id, df, lbl_col, n_folds=None, db_name=None,
+        run_id, model, model_id, df, lbl_col, metric_db=None, n_folds=None,
         **kwargs):
     if n_folds is None:
         n_folds = 5
@@ -30,7 +30,7 @@ def eval_model_by_params(
     print("    Accuracy: {:.2f} (+/- {:.2f})".format(
         scores.mean(), scores.std() * 2))
     n_classes = len(df[lbl_col].unique())
-    if db_name:
+    if metric_db:
         print("    Writing results to db...")
         write_experiment_res(
             res_doc={
@@ -43,13 +43,13 @@ def eval_model_by_params(
                 MetricKey.N_CLASS: n_classes,
                 **kwargs,
             },
-            db_name=db_name,
+            db_name=metric_db,
             run_id=run_id,
         )
 
 
 def eval_pmodel_by_params(
-        run_id, pipeline, pmodel, raw_df, db_name=None, n_folds=None,
+        run_id, pipeline, pmodel, raw_df, metric_db=None, n_folds=None,
         **kwargs):
     print("=============================")
     print("Testing parameterized model on pipeline with "
@@ -69,8 +69,8 @@ def eval_pmodel_by_params(
             run_id=run_id,
             model=model,
             model_id=model_id,
+            metric_db=metric_db,
             df=df,
-            db_name=db_name,
             n_folds=n_folds,
             **full_params
         )
@@ -78,8 +78,23 @@ def eval_pmodel_by_params(
     print("=============================\n")
 
 
-def eval_param_pipeline_n_model(dataframe, param_pipeline, param_model,
-                                db_name=None, n_folds=None):
+def eval_param_pipeline_n_model(param_pipeline, param_model, dataset,
+                                metric_db=None, n_folds=None):
+    """Evaluates the given parameterized pipeline and model.
+
+    Parameters
+    ----------
+    param_pipeline : folk.ParameterizedPipeline
+        The parameterized pipeline to evaluate.
+    param_model : folk.ParameterizedModel
+        The parameterized model to evaluate.
+    dataset : pandas.DataFrame
+        The dataset to evaluate the parameterized pipeline and model on.
+    metric_db : str, optional
+        The name of the folk metrics db to write results to. Must be included
+        in folk's configuration. If not given, results are not written to db.
+    n_folds
+    """
     run_at = datetime.utcnow()
     run_id = str(run_at.timestamp()).replace('.', '')
     i = 1
@@ -89,8 +104,8 @@ def eval_param_pipeline_n_model(dataframe, param_pipeline, param_model,
             run_id=run_id,
             pipeline=pipeline,
             pmodel=param_model,
-            raw_df=dataframe,
-            db_name=db_name,
+            raw_df=dataset,
+            metric_db=metric_db,
             n_folds=n_folds,
             **params,
         )

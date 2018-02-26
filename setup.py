@@ -18,9 +18,14 @@ if sys.version_info.major < 3 or sys.version_info.minor < 5:
 INSTALL_REQUIRES = [
     'numpy', 'scipy', 'scikit-learn',
     # my packages
-    'birch>=0.0.6', 'decore', 'strct', 'pdutil',
+    'birch>=0.0.6', 'decore', 'strct', 'pdutil', 'pymongo',
 ]
-TEST_REQUIRES = ['pytest', 'coverage', 'pytest-cov']
+TEST_REQUIRES = [
+    # testing and coverage
+    'pytest', 'coverage', 'pytest-cov',
+    # test dependencies
+    'pandas', 'pdpipe', 'skutil',
+]
 
 with open('README.rst') as f:
     README = f.read()

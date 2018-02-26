@@ -43,7 +43,7 @@ class FolkMetricsDB(object, metaclass=abc.ABCMeta):
         run_id : str, optional
             A string identifier for the run this experiment is part of.
         """
-        pass
+        pass  # pragma: no cover
 
 
 class FolkMetricsMongoDB(FolkMetricsDB):
@@ -109,7 +109,7 @@ def populate_name_to_db_map():
         return
     for name in names_str.split(','):
         db_cfg = safe_nested_val(
-            key_tuple=(CfgKey.MetricDbs, name, None),
+            key_tuple=(CfgKey.MetricDbs, name),
             dict_obj=cfg,
             default_value=None,
         )
@@ -131,6 +131,9 @@ def populate_name_to_db_map():
             continue
         db_instance = db_cls(name=name, db_cfg=db_cfg)
         NAME_TO_DB_MAP[name] = db_instance
+
+
+populate_name_to_db_map()
 
 
 def write_experiment_res(res_doc, db_name, run_id=None):
