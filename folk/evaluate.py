@@ -15,15 +15,17 @@ from .metricsdb import (
 
 def eval_model_by_params(
         run_id, model, model_id, df, lbl_col, metric_db=None, n_folds=None,
-        **kwargs):
+        n_jobs=None, **kwargs):
     if n_folds is None:
         n_folds = 5
+    if n_jobs is None:
+        n_jobs = 1
     print("  - Testing {}...".format(model_id))
     X, y = x_y_by_col_lbl(df, lbl_col)
     print('    Performing {}-fold cross validation...'.format(n_folds))
     scores = cross_val_score(
         model, X=X, y=y, cv=n_folds, scoring='accuracy',
-        n_jobs=-1,
+        n_jobs=n_jobs,
     )
     acc_mean = scores.mean()
     acc_std = scores.std()
@@ -50,7 +52,7 @@ def eval_model_by_params(
 
 def eval_pmodel_by_params(
         run_id, pipeline, pmodel, raw_df, metric_db=None, n_folds=None,
-        **kwargs):
+        n_jobs=None, **kwargs):
     print("=============================")
     print("Testing parameterized model on pipeline with "
           "params {}".format(kwargs))
@@ -72,6 +74,7 @@ def eval_pmodel_by_params(
             metric_db=metric_db,
             df=df,
             n_folds=n_folds,
+            n_jobs=n_jobs,
             **full_params
         )
         j += 1
@@ -79,7 +82,7 @@ def eval_pmodel_by_params(
 
 
 def eval_param_pipeline_n_model(param_pipeline, param_model, dataset,
-                                metric_db=None, n_folds=None):
+                                metric_db=None, n_folds=None, n_jobs=None):
     """Evaluates the given parameterized pipeline and model.
 
     Parameters
@@ -94,6 +97,7 @@ def eval_param_pipeline_n_model(param_pipeline, param_model, dataset,
         The name of the folk metrics db to write results to. Must be included
         in folk's configuration. If not given, results are not written to db.
     n_folds
+    n_jobs
     """
     run_at = datetime.utcnow()
     run_id = str(run_at.timestamp()).replace('.', '')
@@ -107,6 +111,7 @@ def eval_param_pipeline_n_model(param_pipeline, param_model, dataset,
             raw_df=dataset,
             metric_db=metric_db,
             n_folds=n_folds,
+            n_jobs=n_jobs,
             **params,
         )
         i += 1
