@@ -60,21 +60,25 @@ def eval_pmodel_by_params(
     print("Dataset size: {}".format(len(df)))
     print("Number of columns: {}".format(len(df.columns)))
     print("Resulting dataset size: {}".format(len(df)))
+    print("Resulting columns: {}".format(sorted(list(df.columns))))
     partial_pmodel = pmodel.partial(kwargs)
     j = 1
     for model, params in partial_pmodel.model_n_params_iter():
         model_id = pmodel.model_id_by_params(params)
         print("-------- Model {} --------".format(j))
         print("Testing model with params: {}".format(params))
-        full_params = {**params, **kwargs}
+        full_params = {
+            'run_id': run_id,
+            'model': model,
+            'model_id': model_id,
+            'metric_db': metric_db,
+            'df': df,
+            'n_folds': n_folds,
+            'n_jobs': n_jobs,
+        }
+        full_params.update(params)
+        full_params.update(kwargs)
         eval_model_by_params(
-            run_id=run_id,
-            model=model,
-            model_id=model_id,
-            metric_db=metric_db,
-            df=df,
-            n_folds=n_folds,
-            n_jobs=n_jobs,
             **full_params
         )
         j += 1
