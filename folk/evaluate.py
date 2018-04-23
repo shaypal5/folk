@@ -1,5 +1,6 @@
 """Evalute folk parameterized pipelines and models."""
 
+import time
 from datetime import datetime
 
 from pdutil.transform import x_y_by_col_lbl
@@ -22,11 +23,19 @@ def eval_model_by_params(
         n_jobs = 1
     print("  - Testing {}...".format(model_id))
     X, y = x_y_by_col_lbl(df, lbl_col)
+    print("    Starting cross validation at {}".format(datetime.now()))
     print('    Performing {}-fold cross validation...'.format(n_folds))
+    start = time.time()
     scores = cross_val_score(
         model, X=X, y=y, cv=n_folds, scoring='accuracy',
         n_jobs=n_jobs,
     )
+    end = time.time()
+    total_time = end - start
+    per_fold_time = total_time / n_folds
+    print("    Finished cross validation at {}".format(datetime.now()))
+    print("    Cross validation took {:.2f} s ({:.2f} per fold)".format(
+        total_time, per_fold_time))
     acc_mean = scores.mean()
     acc_std = scores.std()
     print("    Accuracy: {:.2f} (+/- {:.2f})".format(
@@ -41,6 +50,8 @@ def eval_model_by_params(
                 MetricKey.ACC_MEAN: acc_mean,
                 MetricKey.ACC_STD: acc_std,
                 MetricKey.N_FOLDS: n_folds,
+                MetricKey.CROSS_VAL_TIME: total_time,
+                MetricKey.FOLD_TIME: per_fold_time,
                 MetricKey.DATASET_SIZE: len(df),
                 MetricKey.N_CLASS: n_classes,
                 **kwargs,
@@ -56,7 +67,14 @@ def eval_pmodel_by_params(
     print("=============================")
     print("Testing parameterized model on pipeline with "
           "params {}".format(kwargs))
+    print("Starting to apply pipeline at {}".format(datetime.now()))
+    print("Applying pipeline...")
+    start = time.time()
     df = pipeline.fit_transform(raw_df)
+    end = time.time()
+    pipe_time = end - start
+    print("Finished applying pipeline at {}".format(datetime.now()))
+    print("Pipeline application took {:.2f} seconds.".format(pipe_time))
     print("Dataset size: {}".format(len(df)))
     print("Number of columns: {}".format(len(df.columns)))
     print("Resulting dataset size: {}".format(len(df)))

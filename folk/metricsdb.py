@@ -29,6 +29,8 @@ class MetricKey(object):
     N_CLASS = 'n_classes'
     ACC_MEAN = 'accuracy_mean'
     ACC_STD = 'accuracy_std'
+    FOLD_TIME = 'fold_time'
+    CROSS_VAL_TIME = 'cv_time'
 
 
 class FolkMetricsDB(object, metaclass=abc.ABCMeta):
