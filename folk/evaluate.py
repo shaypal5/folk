@@ -34,7 +34,7 @@ def eval_model_by_params(
     total_time = end - start
     per_fold_time = total_time / n_folds
     print("    Finished cross validation at {}".format(datetime.now()))
-    print("    Cross validatio took {:.2f} s ({:.2f} per fold)".format(
+    print("    Cross validation took {:.2f} s ({:.2f} per fold)".format(
         total_time, per_fold_time))
     acc_mean = scores.mean()
     acc_std = scores.std()
@@ -50,6 +50,7 @@ def eval_model_by_params(
                 MetricKey.ACC_MEAN: acc_mean,
                 MetricKey.ACC_STD: acc_std,
                 MetricKey.N_FOLDS: n_folds,
+                MetricKey.CROSS_VAL_TIME: total_time,
                 MetricKey.FOLD_TIME: per_fold_time,
                 MetricKey.DATASET_SIZE: len(df),
                 MetricKey.N_CLASS: n_classes,
