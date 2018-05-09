@@ -26,6 +26,7 @@ class MetricKey(object):
     LBL_COL = 'lbl_col'
     DATASET_SIZE = 'dataset_size'
     N_FOLDS = 'n_folds'
+    N_JOBS = 'n_jobs'
     N_CLASS = 'n_classes'
     ACC_MEAN = 'accuracy_mean'
     ACC_STD = 'accuracy_std'
